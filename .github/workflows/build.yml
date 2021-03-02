@@ -96,11 +96,22 @@ jobs:
       - name: Install dart dependencies
         run: dart pub get
       - name: Select flutter
-        if: matrix.sdk != 'submodule-commit'
+        if: matrix.sdk != 'submodule-commit' && matrix.sdk != 'stable'
         run: |
           cd flutter
-          git fetch --depth 1 origin ${{ matrix.sdk }}:${{ matrix.sdk }}
+          git remote set-branches origin ${{ matrix.sdk }}
+          git fetch --depth 1 origin ${{ matrix.sdk }}
           git checkout ${{ matrix.sdk }} --
+          git pull
+      - name: Select flutter 1.22.6
+        if: matrix.sdk != 'submodule-commit' && matrix.sdk != 'stable'
+        run: |
+          cd flutter
+          git fetch --depth 1 origin 1.22.6:1.22.6
+          git checkout 1.22.6 --
+          git remote set-branches origin stable
+          git fetch --depth 1 origin stable
+          git branch --set-upstream-to origin/stable
       - name: Setup flutter
         run: flutter/bin/flutter doctor
       - run: tool/shared/write-ci-info.sh -v
@@ -138,11 +149,14 @@ jobs:
         run: npm install
       - name: Install dart dependencies
         run: dart pub get
-      - name: Select flutter
+      - name: Select flutter 1.22.6
         run: |
           cd flutter
           git fetch --depth 1 origin 1.22.6:1.22.6
           git checkout 1.22.6 --
+          git remote set-branches origin stable
+          git fetch --depth 1 origin stable
+          git branch --set-upstream-to origin/stable
 
       - name: Setup flutter
         run: flutter/bin/flutter doctor
