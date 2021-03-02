@@ -67,11 +67,11 @@ jobs:
             experimental: true
             # stable
           - name: "Stable channel: code check"
-            sdk: 1.22.6
+            sdk: stable
             task: tool/check-code.sh
             experimental: false
           - name: "Stable channel: jekyll build"
-            sdk: 1.22.6
+            sdk: stable
             task: bundle exec jekyll build
             experimental: false
 
@@ -104,7 +104,7 @@ jobs:
           git checkout ${{ matrix.sdk }} --
           git pull
       - name: Select flutter 1.22.6
-        if: matrix.sdk != 'submodule-commit' && matrix.sdk != 'stable'
+        if: matrix.sdk == 'stable'
         run: |
           cd flutter
           git fetch --depth 1 origin 1.22.6:1.22.6
