@@ -99,10 +99,8 @@ jobs:
         if: matrix.sdk != 'submodule-commit'
         run: |
           cd flutter
-          git remote set-branches origin ${{ matrix.sdk }}
-          git fetch --depth 1 origin ${{ matrix.sdk }}
+          git fetch --depth 1 origin ${{ matrix.sdk }}:${{ matrix.sdk }}
           git checkout ${{ matrix.sdk }} --
-          git pull
       - name: Setup flutter
         run: flutter/bin/flutter doctor
       - run: tool/shared/write-ci-info.sh -v
@@ -143,10 +141,9 @@ jobs:
       - name: Select flutter
         run: |
           cd flutter
-          git remote set-branches origin 1.22.6
-          git fetch --depth 1 origin 1.22.6
+          git fetch --depth 1 origin 1.22.6:1.22.6
           git checkout 1.22.6 --
-          git pull
+
       - name: Setup flutter
         run: flutter/bin/flutter doctor
       - run: tool/shared/write-ci-info.sh -v
